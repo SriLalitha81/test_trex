@@ -4,6 +4,8 @@ var ground, invisibleGround, groundImage;
 var cloudsGroup,cloudImage;
 var obstaclesGroup,obstacle1,obstacle1,obstacle2,obstacle3,obstacle4,obstacle5,obstacle6;
 
+var jumpSound, dieSound, checkPointSound;
+
 var score = 0;
 
 function preload(){
@@ -21,6 +23,9 @@ function preload(){
   obstacle5 = loadImage("obstacle5.png");
   obstacle6 = loadImage("obstacle6.png");
   
+  jumpSound = loadSound("jump.mp3");
+  dieSound = loadSound("die.mp3");
+  checkPointSound = loadSound("checkPoint.mp3");
 }
 
 function setup() {
@@ -48,7 +53,8 @@ function draw() {
   score = score + Math.round(getFrameRate() /60);
   text("Score: " + score,500,50);
   
-  if(keyDown("space")) {
+  if(keyDown("space") && trex.y >= 159) {
+    jumpSound.play();
     trex.velocityY = -10;
   }
   
@@ -63,6 +69,12 @@ function draw() {
   spawnClouds();
   
   spawnObstacles();
+  
+  if(score>0 && score%100 === 0){
+   checkPointSound.play();    
+  }
+  
+  
   
   drawSprites();
 }
